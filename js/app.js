@@ -716,63 +716,350 @@ const TodoModule = {
   // ── Stub methods (to be implemented in later tasks) ───────────────────────
 
   /**
-   * Stub — edit an existing task title.
-   * @param {string} id
-   * @param {string} newTitle
+   * Updates the title of an existing task after validation.
+   * On failure: displays an inline error next to the task's edit input.
+   * On success: updates _tasks entry, persists, and re-renders the list.
+   *
+   * Satisfies Requirements 6.4, 6.5, 6.6, 6.7, 6.8.
+   *
+   * @param {string} id        The id of the task to edit.
+   * @param {string} newTitle  The raw new title value from the edit input.
    */
   editTask(id, newTitle) {
-    // TODO: implement in a later task
+    const validation = this._validateTitle(newTitle, id);
+
+    if (!validation.valid) {
+      // Display the inline error next to the task's edit input
+      const errorEl = document.getElementById('task-edit-error-' + id);
+      if (errorEl) errorEl.textContent = validation.error;
+      return;
+    }
+
+    // Find and update the task in _tasks
+    for (let i = 0; i < this._tasks.length; i++) {
+      if (this._tasks[i].id === id) {
+        this._tasks[i].title = newTitle.trim();
+        break;
+      }
+    }
+
+    this._persist();
+    this._render();
   },
 
   /**
-   * Stub — toggle the completed state of a task.
-   * @param {string} id
+   * Toggles the completed state of a task.
+   * Captures the previous value, flips it, persists, then checks if storage
+   * is still available. If not, reverts to the previous value before re-rendering.
+   *
+   * Satisfies Requirements 7.1, 7.2, 7.3.
+   *
+   * @param {string} id  The id of the task to toggle.
    */
   toggleComplete(id) {
-    // TODO: implement in a later task
+    // Find the task
+    var task = null;
+    for (var i = 0; i < this._tasks.length; i++) {
+      if (this._tasks[i].id === id) {
+        task = this._tasks[i];
+        break;
+      }
+    }
+    if (!task) return;
+
+    // Capture previous state and flip
+    var previous = task.completed;
+    task.completed = !previous;
+
+    // Persist
+    this._persist();
+
+    // If storage write failed, revert
+    if (!StorageService.isAvailable()) {
+      task.completed = previous;
+      this._render();
+      NotificationService.showAlert(
+        'Could not save completion status. Changes will not be persisted.',
+        5000
+      );
+      return;
+    }
+
+    this._render();
   },
 
   /**
-   * Stub — delete a task from the list.
-   * @param {string} id
+   * Removes a task from the list and persists the change.
+   * Captures the task and its index before removal. If persistence fails,
+   * re-inserts at the original index and shows a non-blocking error.
+   *
+   * Satisfies Requirements 7.7, 7.8, 7.9.
+   *
+   * @param {string} id  The id of the task to delete.
    */
   deleteTask(id) {
-    // TODO: implement in a later task
+    // Find the task and its index
+    var taskIndex = -1;
+    var task = null;
+    for (var i = 0; i < this._tasks.length; i++) {
+      if (this._tasks[i].id === id) {
+        taskIndex = i;
+        task = this._tasks[i];
+        break;
+      }
+    }
+    if (taskIndex === -1) return;
+
+    // Remove from array
+    this._tasks.splice(taskIndex, 1);
+
+    // Persist
+    this._persist();
+
+    // If storage write failed, re-insert at original index
+    if (!StorageService.isAvailable()) {
+      this._tasks.splice(taskIndex, 0, task);
+      this._render();
+      NotificationService.showAlert(
+        'Could not delete task. Data persistence is unavailable.',
+        5000
+      );
+      return;
+    }
+
+    this._render();
   },
 
   /**
-   * Stub — set and persist the sort preference, then re-render.
-   * @param {string} pref
+   * Persists the sort preference, updates _sortPref, and re-renders the list.
+   * The re-render must complete within 300 ms (Requirement 8.2, 8.4).
+   *
+   * @param {string} pref  One of: "default", "az", "za", "completed-last", "completed-first"
    */
   setSortPreference(pref) {
-    // TODO: implement in a later task
+    StorageService.set('tld_sortPreference', pref);
+    this._sortPref = pref;
+    this._render();
   },
 
   /**
-   * Stub — returns a sorted shallow copy of _tasks.
+   * Returns a shallow copy of _tasks sorted according to the current _sortPref.
+   * Never mutates the underlying _tasks array (Requirement 8.2, Property 19).
+   *
+   * Sort options:
+   *  "default"         → creation order (ascending createdAt)
+   *  "az"              → alphabetical A→Z (case-insensitive)
+   *  "za"              → alphabetical Z→A (case-insensitive)
+   *  "completed-last"  → incomplete first, then completed
+   *  "completed-first" → completed first, then incomplete
+   *
    * @returns {Array}
    */
   _getSortedTasks() {
-    return this._tasks.slice();
+    const copy = this._tasks.slice();
+
+    switch (this._sortPref) {
+      case 'az':
+        copy.sort(function (a, b) {
+          return a.title.toLowerCase().localeCompare(b.title.toLowerCase());
+        });
+        break;
+
+      case 'za':
+        copy.sort(function (a, b) {
+          return b.title.toLowerCase().localeCompare(a.title.toLowerCase());
+        });
+        break;
+
+      case 'completed-last':
+        // false (0) sorts before true (1) → incomplete first
+        copy.sort(function (a, b) {
+          return (a.completed ? 1 : 0) - (b.completed ? 1 : 0);
+        });
+        break;
+
+      case 'completed-first':
+        // true (1) sorts before false (0) → completed first
+        copy.sort(function (a, b) {
+          return (b.completed ? 1 : 0) - (a.completed ? 1 : 0);
+        });
+        break;
+
+      case 'default':
+      default:
+        // Creation order: ascending createdAt
+        copy.sort(function (a, b) {
+          return a.createdAt - b.createdAt;
+        });
+        break;
+    }
+
+    return copy;
   },
 
   /**
-   * Stub — clears #task-list and re-renders all tasks.
+   * Clears #task-list and re-renders all tasks using _getSortedTasks().
+   * Satisfies Requirements 5.5, 6.5, 8.2.
    */
   _render() {
     const listEl = document.getElementById('task-list');
-    if (listEl) listEl.innerHTML = '';
-    // TODO: render individual task elements in a later task
+    if (!listEl) return;
+    listEl.innerHTML = '';
+    const sorted = this._getSortedTasks();
+    for (let i = 0; i < sorted.length; i++) {
+      listEl.appendChild(this._renderTask(sorted[i]));
+    }
   },
 
   /**
-   * Stub — creates and returns a DOM element for one task.
-   * @param {Object} task
-   * @returns {HTMLElement}
+   * Creates and returns a fully interactive <li> DOM element for one task.
+   *
+   * The element contains:
+   *  - A checkbox to toggle completion (TODO: wired in task 12.1)
+   *  - A <span> showing the task title (hidden in edit mode)
+   *  - An Edit button that enters inline edit mode
+   *  - In edit mode: a text <input> pre-filled with the current title,
+   *    a Confirm button (✓), and a Cancel button (✗), plus an error <span>
+   *  - A Delete button (TODO: wired in task 12.1)
+   *
+   * Applies CSS class `task--completed` when task.completed is true.
+   *
+   * Satisfies Requirements 6.1, 6.2, 6.3, 6.4, 6.5, 6.6, 6.7, 6.8, 6.9.
+   *
+   * @param {Object} task  { id, title, completed, createdAt }
+   * @returns {HTMLLIElement}
    */
   _renderTask(task) {
-    // TODO: implement in a later task
-    return document.createElement('li');
+    const li = document.createElement('li');
+    li.className = 'task-item' + (task.completed ? ' task--completed' : '');
+    li.dataset.taskId = task.id;
+
+    // ── Completion checkbox (wired in task 12.1) ────────────────────────────
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.checked = task.completed;
+    checkbox.className = 'task-checkbox';
+    checkbox.setAttribute('aria-label', 'Mark task complete');
+    checkbox.addEventListener('change', function () { TodoModule.toggleComplete(task.id); });
+
+    // ── Title span (normal display mode) ────────────────────────────────────
+    const titleSpan = document.createElement('span');
+    titleSpan.className = 'task-title';
+    titleSpan.textContent = task.title;
+
+    // ── Edit mode elements (hidden until Edit is clicked) ───────────────────
+    const editInput = document.createElement('input');
+    editInput.type = 'text';
+    editInput.className = 'task-edit-input';
+    editInput.maxLength = 100;
+    editInput.value = task.title;
+    editInput.setAttribute('aria-label', 'Edit task title');
+    editInput.style.display = 'none';
+
+    const editErrorSpan = document.createElement('span');
+    editErrorSpan.className = 'task-edit-error error-msg';
+    editErrorSpan.id = 'task-edit-error-' + task.id;
+    editErrorSpan.style.display = 'none';
+
+    const confirmBtn = document.createElement('button');
+    confirmBtn.type = 'button';
+    confirmBtn.className = 'task-confirm-btn';
+    confirmBtn.textContent = '✓';
+    confirmBtn.setAttribute('aria-label', 'Confirm edit');
+    confirmBtn.style.display = 'none';
+
+    const cancelBtn = document.createElement('button');
+    cancelBtn.type = 'button';
+    cancelBtn.className = 'task-cancel-btn';
+    cancelBtn.textContent = '✗';
+    cancelBtn.setAttribute('aria-label', 'Cancel edit');
+    cancelBtn.style.display = 'none';
+
+    // ── Edit button (visible in normal mode) ────────────────────────────────
+    const editBtn = document.createElement('button');
+    editBtn.type = 'button';
+    editBtn.className = 'task-edit-btn';
+    editBtn.textContent = 'Edit';
+    editBtn.setAttribute('aria-label', 'Edit task');
+
+    // ── Delete button (wired in task 12.1) ──────────────────────────────────
+    const deleteBtn = document.createElement('button');
+    deleteBtn.type = 'button';
+    deleteBtn.className = 'task-delete-btn';
+    deleteBtn.textContent = 'Delete';
+    deleteBtn.setAttribute('aria-label', 'Delete task');
+    deleteBtn.addEventListener('click', function () { TodoModule.deleteTask(task.id); });
+
+    // ── Enter edit mode ─────────────────────────────────────────────────────
+    function enterEditMode() {
+      titleSpan.style.display = 'none';
+      editBtn.style.display = 'none';
+      deleteBtn.style.display = 'none';
+
+      editInput.value = task.title;
+      editInput.style.display = '';
+      editErrorSpan.style.display = '';
+      confirmBtn.style.display = '';
+      cancelBtn.style.display = '';
+
+      // Position cursor at end of text (Req 6.2)
+      editInput.focus();
+      editInput.setSelectionRange(editInput.value.length, editInput.value.length);
+    }
+
+    // ── Exit edit mode (restore normal display) ─────────────────────────────
+    function exitEditMode() {
+      editInput.style.display = 'none';
+      editErrorSpan.style.display = 'none';
+      editErrorSpan.textContent = '';
+      confirmBtn.style.display = 'none';
+      cancelBtn.style.display = 'none';
+
+      titleSpan.style.display = '';
+      editBtn.style.display = '';
+      deleteBtn.style.display = '';
+    }
+
+    // ── Wire Edit button ─────────────────────────────────────────────────────
+    editBtn.addEventListener('click', function () {
+      enterEditMode();
+    });
+
+    // ── Wire Confirm button ──────────────────────────────────────────────────
+    confirmBtn.addEventListener('click', function () {
+      // Clear previous error before attempting validation
+      editErrorSpan.textContent = '';
+      TodoModule.editTask(task.id, editInput.value);
+      // If editTask succeeded it calls _render(), which replaces this element.
+      // If it failed, the error span was populated by editTask — keep edit mode open.
+    });
+
+    // ── Wire Enter key on edit input (same as Confirm) ──────────────────────
+    editInput.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') {
+        editErrorSpan.textContent = '';
+        TodoModule.editTask(task.id, editInput.value);
+      } else if (e.key === 'Escape') {
+        exitEditMode();
+      }
+    });
+
+    // ── Wire Cancel button ───────────────────────────────────────────────────
+    cancelBtn.addEventListener('click', function () {
+      exitEditMode(); // Req 6.9 — discard change, restore original display
+    });
+
+    // ── Assemble the <li> ────────────────────────────────────────────────────
+    li.appendChild(checkbox);
+    li.appendChild(titleSpan);
+    li.appendChild(editInput);
+    li.appendChild(editErrorSpan);
+    li.appendChild(confirmBtn);
+    li.appendChild(cancelBtn);
+    li.appendChild(editBtn);
+    li.appendChild(deleteBtn);
+
+    return li;
   },
 
   /**
@@ -784,29 +1071,48 @@ const TodoModule = {
 
   /**
    * Initialises the TodoModule:
-   *  1. Loads tasks from storage (falls back to empty array).
-   *  2. Renders the task list.
-   *  3. Wires #task-add-btn click to addTask().
-   *  4. Wires Enter-key on #task-input to addTask().
-   *  5. Clears #task-add-error when the input is focused.
+   *  1. Loads tasks from storage (validates array, defaults to []).
+   *  2. Loads sort preference from storage (validates against known values, defaults to "default").
+   *  3. Sets #task-sort select value to match the loaded preference.
+   *  4. Renders the task list (using the loaded sort preference).
+   *  5. Wires #task-add-btn click to addTask().
+   *  6. Wires Enter-key on #task-input to addTask().
+   *  7. Clears #task-add-error when the input is focused.
+   *  8. Wires #task-sort change handler to setSortPreference().
    *
-   * Satisfies Requirements 5.1, 5.5.
+   * Satisfies Requirements 5.1, 5.5, 8.1, 8.3, 8.4, 8.5, 11.1.
    */
   init() {
-    const saved = StorageService.get('tld_tasks');
-    this._tasks = Array.isArray(saved) ? saved : [];
+    // 1. Load tasks
+    const savedTasks = StorageService.get('tld_tasks');
+    this._tasks = Array.isArray(savedTasks) ? savedTasks : [];
+
+    // 2. Load sort preference
+    const VALID_PREFS = ['default', 'az', 'za', 'completed-last', 'completed-first'];
+    const savedPref = StorageService.get('tld_sortPreference');
+    this._sortPref = VALID_PREFS.indexOf(savedPref) !== -1 ? savedPref : 'default';
+
+    // 3. Sync the select element to the loaded preference
+    const sortSelect = document.getElementById('task-sort');
+    if (sortSelect) {
+      sortSelect.value = this._sortPref;
+    }
+
+    // 4. Render with the loaded sort preference
     this._render();
 
     const taskInput = document.getElementById('task-input');
     const addBtn    = document.getElementById('task-add-btn');
     const errorEl   = document.getElementById('task-add-error');
 
+    // 5. Wire add button
     if (addBtn) {
       addBtn.addEventListener('click', () => {
         this.addTask(taskInput ? taskInput.value : '');
       });
     }
 
+    // 6 & 7. Wire task input keyboard and focus events
     if (taskInput) {
       taskInput.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
@@ -818,5 +1124,294 @@ const TodoModule = {
         if (errorEl) errorEl.textContent = '';
       });
     }
+
+    // 8. Wire sort select change handler
+    if (sortSelect) {
+      sortSelect.addEventListener('change', () => {
+        TodoModule.setSortPreference(sortSelect.value);
+      });
+    }
   },
 };
+
+/* ========= QuickLinksModule ========= */
+
+const QuickLinksModule = {
+  _links: [],
+
+  /**
+   * Pure function — validates a quick link label and URL.
+   *
+   * Validation rules:
+   *  - label: non-empty after trim, max 100 characters
+   *  - url: must start with "http://" or "https://" (case-sensitive prefix check)
+   *
+   * @param {string} label  Raw label string from the input field.
+   * @param {string} url    Raw URL string from the input field.
+   * @returns {{ valid: boolean, errors: { label: string|null, url: string|null } }}
+   */
+  _validateLink(label, url) {
+    const errors = { label: null, url: null };
+    const trimmedLabel = (label || '').trim();
+
+    if (trimmedLabel.length === 0) {
+      errors.label = 'Label cannot be empty.';
+    } else if (trimmedLabel.length > 100) {
+      errors.label = 'Label must be 100 characters or fewer.';
+    }
+
+    if (!url || (!url.startsWith('http://') && !url.startsWith('https://'))) {
+      errors.url = 'URL must begin with http:// or https://';
+    }
+
+    const valid = errors.label === null && errors.url === null;
+    return { valid, errors };
+  },
+
+  /**
+   * Attempts to add a new quick link after validation.
+   *
+   * Order of checks:
+   *  1. If _links.length >= 20, show error on #link-cap-error and return.
+   *  2. Run _validateLink; if invalid, show field-level errors and return.
+   *  3. On success: create link object, push to _links, persist, render,
+   *     and clear the input fields.
+   *
+   * Satisfies Requirements 9.2, 9.3, 9.9.
+   *
+   * @param {string} label  Raw label value from #link-label-input.
+   * @param {string} url    Raw URL value from #link-url-input.
+   */
+  addLink(label, url) {
+    // Clear all previous errors
+    const labelErrorEl = document.getElementById('link-label-error');
+    const urlErrorEl   = document.getElementById('link-url-error');
+    const capErrorEl   = document.getElementById('link-cap-error');
+
+    if (labelErrorEl) labelErrorEl.textContent = '';
+    if (urlErrorEl)   urlErrorEl.textContent   = '';
+    if (capErrorEl)   capErrorEl.textContent   = '';
+
+    // Cap check — must happen BEFORE validation per spec
+    if (this._links.length >= 20) {
+      if (capErrorEl) capErrorEl.textContent = 'Maximum of 20 quick links reached.';
+      return;
+    }
+
+    // Field-level validation
+    const { valid, errors } = this._validateLink(label, url);
+    if (!valid) {
+      if (labelErrorEl && errors.label) labelErrorEl.textContent = errors.label;
+      if (urlErrorEl   && errors.url)   urlErrorEl.textContent   = errors.url;
+      return;
+    }
+
+    // Create and store the new link
+    const link = {
+      id: crypto.randomUUID(),
+      label: label.trim(),
+      url: url,
+      createdAt: Date.now(),
+    };
+    this._links.push(link);
+    this._persist();
+    this._render();
+
+    // Clear input fields on success
+    const labelInput = document.getElementById('link-label-input');
+    const urlInput   = document.getElementById('link-url-input');
+    if (labelInput) labelInput.value = '';
+    if (urlInput)   urlInput.value   = '';
+  },
+
+  /**
+   * Removes a quick link from the list by its id, then persists and re-renders.
+   *
+   * Satisfies Requirements 9.5, 9.6.
+   *
+   * @param {string} id  The id of the quick link to remove.
+   */
+  deleteLink(id) {
+    this._links = this._links.filter(function (link) {
+      return link.id !== id;
+    });
+    this._persist();
+    this._render();
+  },
+
+  /**
+   * Creates and returns a DOM <a> element representing a single quick link card.
+   *
+   * Produces:
+   *  <a href="{url}" target="_blank" rel="noopener noreferrer" class="link-card">
+   *    <span class="link-label">{label}</span>
+   *    <button type="button" class="link-delete-btn" aria-label="Delete link">×</button>
+   *  </a>
+   *
+   * Satisfies Requirements 9.4, 9.5.
+   *
+   * @param {{ id: string, label: string, url: string, createdAt: number }} link
+   * @returns {HTMLAnchorElement}
+   */
+  _renderCard(link) {
+    const anchor = document.createElement('a');
+    anchor.href = link.url;
+    anchor.target = '_blank';
+    anchor.rel = 'noopener noreferrer';
+    anchor.className = 'link-card';
+
+    const labelSpan = document.createElement('span');
+    labelSpan.className = 'link-label';
+    labelSpan.textContent = link.label;
+
+    const deleteBtn = document.createElement('button');
+    deleteBtn.type = 'button';
+    deleteBtn.className = 'link-delete-btn';
+    deleteBtn.setAttribute('aria-label', 'Delete link');
+    deleteBtn.textContent = '×';
+    deleteBtn.addEventListener('click', function (e) {
+      // Prevent the anchor from navigating when the delete button is clicked
+      e.preventDefault();
+      e.stopPropagation();
+      QuickLinksModule.deleteLink(link.id);
+    });
+
+    anchor.appendChild(labelSpan);
+    anchor.appendChild(deleteBtn);
+
+    return anchor;
+  },
+
+  /**
+   * Clears #links-list and re-renders all link cards.
+   *
+   * Satisfies Requirements 9.4, 9.7, 9.8.
+   */
+  _render() {
+    const listEl = document.getElementById('links-list');
+    if (!listEl) return;
+    listEl.innerHTML = '';
+    for (let i = 0; i < this._links.length; i++) {
+      listEl.appendChild(this._renderCard(this._links[i]));
+    }
+  },
+
+  /**
+   * Writes the current _links array to StorageService under "tld_quickLinks".
+   *
+   * Satisfies Requirements 9.2, 9.6, 11.3.
+   */
+  _persist() {
+    StorageService.set('tld_quickLinks', this._links);
+  },
+
+  /**
+   * Initialises the QuickLinksModule:
+   *  1. Reads "tld_quickLinks" from StorageService; validates it is an array,
+   *     defaults to [] if absent or invalid (satisfies Requirements 9.7, 9.8, 11.1).
+   *  2. Renders the link list immediately.
+   *  3. Wires the #link-add-btn click handler to read #link-label-input and
+   *     #link-url-input values and call addLink().
+   *
+   * Satisfies Requirements 9.7, 9.8, 11.1.
+   */
+  init() {
+    // 1. Load and validate stored links
+    const saved = StorageService.get('tld_quickLinks');
+    this._links = Array.isArray(saved) ? saved : [];
+
+    // 2. Render whatever we loaded
+    this._render();
+
+    // 3. Wire the add button
+    const addBtn    = document.getElementById('link-add-btn');
+    const labelInput = document.getElementById('link-label-input');
+    const urlInput   = document.getElementById('link-url-input');
+
+    if (addBtn) {
+      addBtn.addEventListener('click', function () {
+        QuickLinksModule.addLink(
+          labelInput ? labelInput.value : '',
+          urlInput   ? urlInput.value   : ''
+        );
+      });
+    }
+  },
+};
+
+/* =========================================================================
+   TimeoutGuard — watches for the 10-second load timeout (Requirement 12.6).
+   Starts a watchdog timer immediately (before DOMContentLoaded). The
+   DOMContentLoaded handler (added in task 17.1) clears it via
+   clearTimeout(TimeoutGuard._timeoutId) once the page is ready.
+   ========================================================================= */
+
+const TimeoutGuard = {
+  _timeoutId: null,
+
+  /**
+   * Starts the 10-second watchdog timer.
+   * Must be called at the very top of the startup sequence, before
+   * DOMContentLoaded, so that slow-loading pages are caught.
+   * Stores the timeout id in _timeoutId so DOMContentLoaded can cancel it.
+   *
+   * Satisfies Requirement 12.6.
+   */
+  init() {
+    this._timeoutId = setTimeout(function () {
+      TimeoutGuard._showError();
+    }, 10000);
+  },
+
+  /**
+   * Displays a visible error message prompting the user to reload the page.
+   * Tries NotificationService.showWarning() first (requires the DOM to be ready).
+   * Since this fires after 10 seconds the DOM should always be available, but
+   * falls back to inserting a plain <div> into document.body if the banner
+   * element is missing.
+   *
+   * Satisfies Requirement 12.6.
+   */
+  _showError() {
+    const message = 'The page took too long to load. Please reload.';
+
+    // Primary path: use the existing #storage-warning banner.
+    var banner = document.getElementById('storage-warning');
+    if (banner) {
+      NotificationService.showWarning(message);
+      return;
+    }
+
+    // Fallback: inject a minimal error element if the banner isn't in the DOM yet.
+    if (document.body) {
+      var fallback = document.createElement('div');
+      fallback.id = 'timeout-error';
+      fallback.setAttribute('role', 'alert');
+      fallback.style.cssText =
+        'position:fixed;top:0;left:0;right:0;padding:12px;background:#c0392b;' +
+        'color:#fff;text-align:center;font-weight:bold;z-index:9999;';
+      fallback.textContent = message;
+      document.body.insertBefore(fallback, document.body.firstChild);
+    }
+  },
+};
+
+// ── Startup: begin the watchdog immediately (before DOMContentLoaded) ──────
+TimeoutGuard.init();
+
+/* =========================================================================
+   Startup — wire all modules in DOMContentLoaded sequence.
+   TimeoutGuard.init() already ran at script parse time (above).
+   ========================================================================= */
+document.addEventListener('DOMContentLoaded', function () {
+  StorageService.init();
+  ThemeModule.init();
+  ClockModule.init();
+  GreetingModule.init();
+  TimerModule.init();
+  TodoModule.init();
+  QuickLinksModule.init();
+
+  // Cancel the TimeoutGuard watchdog — page loaded successfully.
+  clearTimeout(TimeoutGuard._timeoutId);
+});

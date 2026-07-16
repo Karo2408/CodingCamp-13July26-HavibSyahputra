@@ -197,8 +197,8 @@ Build a fully client-side personal productivity homepage using pure HTML, CSS, a
     - Use `fc.string({minLength:1, maxLength:100})`; pre-seed list; call `addTask` with same/different-case string; assert length unchanged
 
 
-- [ ] 11. TodoModule — edit task
-  - [~] 11.1 Implement `TodoModule.editTask` and inline edit UI in `js/app.js`
+- [x] 11. TodoModule — edit task
+  - [x] 11.1 Implement `TodoModule.editTask` and inline edit UI in `js/app.js`
     - `editTask(id, newTitle)`: call `_validateTitle(newTitle, id)`; on failure display inline error next to the task's input; on success update `_tasks` entry, call `_persist()`, call `_render()`
     - `_renderTask(task)`: render edit button that replaces the title span with an `<input>` pre-filled with current title (cursor at end), and shows confirm/cancel buttons
     - On cancel: restore original title display without persisting
@@ -215,8 +215,8 @@ Build a fully client-side personal productivity homepage using pure HTML, CSS, a
     - Use whitespace-only strings and strings matching another task title; assert original title unchanged
 
 
-- [ ] 12. TodoModule — complete and delete tasks
-  - [~] 12.1 Implement `TodoModule.toggleComplete` and `deleteTask` in `js/app.js`
+- [x] 12. TodoModule — complete and delete tasks
+  - [x] 12.1 Implement `TodoModule.toggleComplete` and `deleteTask` in `js/app.js`
     - `toggleComplete(id)`: capture previous `completed` value; flip it in `_tasks`; call `_persist()`; if `StorageService.isAvailable()` is `false` after the call, revert to previous value and re-render; else re-render
     - `deleteTask(id)`: capture task and its index; remove from `_tasks`; call `_persist()`; if `StorageService.isAvailable()` is `false`, re-insert at original index and re-render with error; else re-render
     - `_renderTask(task)`: apply CSS class `task--completed` (strikethrough) when `task.completed === true`
@@ -234,8 +234,8 @@ Build a fully client-side personal productivity homepage using pure HTML, CSS, a
     - Use `fc.array(taskArbitrary, {minLength:1})`; pick random id; assert list length decreases by 1 and no task with that id remains
 
 
-- [ ] 13. TodoModule — sort and persistence
-  - [~] 13.1 Implement `TodoModule._getSortedTasks`, `setSortPreference`, `_persist`, `_render`, and `init` in `js/app.js`
+- [x] 13. TodoModule — sort and persistence
+  - [x] 13.1 Implement `TodoModule._getSortedTasks`, `setSortPreference`, `_persist`, `_render`, and `init` in `js/app.js`
     - `_getSortedTasks()`: return a **shallow copy** of `_tasks` sorted per `_sortPref`; never mutate `_tasks`
     - `setSortPreference(pref)`: persist `pref` to `StorageService.set("tld_sortPreference", pref)`, update `_sortPref`, call `_render()`; re-render must complete within 300 ms
     - `_persist()`: call `StorageService.set("tld_tasks", _tasks)`
@@ -259,11 +259,11 @@ Build a fully client-side personal productivity homepage using pure HTML, CSS, a
     - Use array of task objects; call `_persist()` then reload via `init()`; assert task list equals original
 
 
-- [~] 14. Checkpoint — TodoModule complete
+- [x] 14. Checkpoint — TodoModule complete
   - Ensure all tests pass, ask the user if questions arise.
 
-- [ ] 15. QuickLinksModule
-  - [~] 15.1 Implement `QuickLinksModule._validateLink`, `addLink`, `deleteLink`, `_render`, `_renderCard`, `_persist`, and `init` in `js/app.js`
+- [x] 15. QuickLinksModule
+  - [x] 15.1 Implement `QuickLinksModule._validateLink`, `addLink`, `deleteLink`, `_render`, `_renderCard`, `_persist`, and `init` in `js/app.js`
     - `_validateLink(label, url)`: pure function — check label non-empty and ≤ 100 chars; check URL starts with `http://` or `https://`; return `{valid, errors}`
     - `addLink(label, url)`: call `_validateLink`; if invalid display field-level errors on `#link-label-error` / `#link-url-error`; if `_links.length >= 20` display error on `#link-cap-error`; on success create `{id, label: label.trim(), url, createdAt: Date.now()}`, push to `_links`, call `_persist()`, call `_render()`
     - `deleteLink(id)`: remove from `_links`, call `_persist()`, call `_render()`
@@ -287,15 +287,15 @@ Build a fully client-side personal productivity homepage using pure HTML, CSS, a
     - Pre-seed `_links` with exactly 20 entries; attempt `addLink` with valid input; assert list length stays at 20
 
 
-- [ ] 16. TimeoutGuard
-  - [~] 16.1 Implement `TimeoutGuard` in `js/app.js`
+- [x] 16. TimeoutGuard
+  - [x] 16.1 Implement `TimeoutGuard` in `js/app.js`
     - `init()`: call `setTimeout(() => TimeoutGuard._showError(), 10000)` and store the timeout id; wire into startup sequence so that `DOMContentLoaded` clears it via `clearTimeout`
     - `_showError()`: display a visible error element (or use `NotificationService.showWarning`) instructing the user to reload the page
     - Place `TimeoutGuard.init()` call at the very top of the script (before `DOMContentLoaded`) per the startup sequence in the design
     - _Requirements: 12.6_
 
-- [ ] 17. Wire all modules in `DOMContentLoaded` and final integration
-  - [~] 17.1 Wire the startup sequence in `js/app.js`
+- [x] 17. Wire all modules in `DOMContentLoaded` and final integration
+  - [x] 17.1 Wire the startup sequence in `js/app.js`
     - Inside `document.addEventListener('DOMContentLoaded', ...)`: call `StorageService.init()`, `ThemeModule.init()`, `ClockModule.init()`, `GreetingModule.init()`, `TimerModule.init()`, `TodoModule.init()`, `QuickLinksModule.init()`
     - Clear `TimeoutGuard` timeout at the end of `DOMContentLoaded`
     - Ensure all module declarations appear before the `DOMContentLoaded` listener
@@ -306,7 +306,7 @@ Build a fully client-side personal productivity homepage using pure HTML, CSS, a
     - Test: add duplicate task → assert rejected; sort change → assert rendered order; persistence survives simulated reload
     - _Requirements: 5.2, 5.4, 6.5, 7.2, 7.8, 8.2_
 
-- [~] 18. Final checkpoint — Ensure all tests pass
+- [x] 18. Final checkpoint — Ensure all tests pass
   - Ensure all tests pass, ask the user if questions arise.
 
 
