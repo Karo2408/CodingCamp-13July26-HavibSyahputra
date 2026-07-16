@@ -156,5 +156,27 @@
 
   </main>
 
+  <!-- ===== FOCUS SESSION COMPLETE MODAL ===== -->
+  <!--
+    Hidden by default. FocusModal.show() in app.js makes it visible by adding
+    the class `is-open` to #focus-modal-backdrop, which transitions it from
+    opacity:0/pointer-events:none to fully visible.
+  -->
+  <div
+    id="focus-modal-backdrop"
+    class="modal-backdrop"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="focus-modal-title"
+    aria-describedby="focus-modal-message"
+  >
+    <div class="modal-box" id="focus-modal-box">
+      <p class="modal-icon" aria-hidden="true">🎉</p>
+      <h2 class="modal-title" id="focus-modal-title">Focus Session Complete!</h2>
+      <p class="modal-message" id="focus-modal-message">Great job! Time to take a short break.</p>
+      <button type="button" class="modal-ok-btn" id="focus-modal-ok">OK</button>
+    </div>
+  </div>
+
 </body>
 </html>

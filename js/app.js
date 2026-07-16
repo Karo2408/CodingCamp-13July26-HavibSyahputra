@@ -539,7 +539,7 @@ const TimerModule = {
     this._remaining = 0;
     this._updateDisplay();
     this._updateButtons();
-    NotificationService.showAlert('Focus session complete!', 5000);
+    FocusModal.show();
   },
 
   /**
@@ -1335,6 +1335,100 @@ const QuickLinksModule = {
           urlInput   ? urlInput.value   : ''
         );
       });
+    }
+  },
+};
+
+/* ========= FocusModal ========= */
+
+/**
+ * FocusModal — centered modal popup shown when the focus timer completes.
+ * Replaces the auto-dismissing toast notification with a deliberate,
+ * attention-grabbing dialog that the user must explicitly dismiss.
+ *
+ * Dismissal paths:
+ *   1. Click the OK button  (#focus-modal-ok)
+ *   2. Press the Escape key
+ *   3. Click the backdrop outside the modal box
+ *
+ * All paths call FocusModal.hide().
+ */
+const FocusModal = {
+  _isOpen: false,
+  _boundKeyHandler: null,
+
+  /**
+   * Shows the modal by adding the `is-open` class to the backdrop element.
+   * Traps focus on the OK button and registers the Escape + backdrop-click
+   * handlers. No-ops if already open.
+   */
+  show() {
+    if (this._isOpen) return;
+    this._isOpen = true;
+
+    const backdrop = document.getElementById('focus-modal-backdrop');
+    const okBtn    = document.getElementById('focus-modal-ok');
+
+    if (!backdrop) return;
+
+    // Make it visible (CSS transition handles the fade + scale)
+    backdrop.classList.add('is-open');
+
+    // Prevent scrolling the page behind the modal
+    document.body.style.overflow = 'hidden';
+
+    // Focus the OK button so keyboard users can dismiss immediately
+    if (okBtn) {
+      // Small delay lets the CSS transition start before focus fires
+      setTimeout(function () { okBtn.focus(); }, 50);
+    }
+
+    // Wire the OK button (once, via a one-shot listener)
+    if (okBtn) {
+      okBtn.addEventListener('click', function handler() {
+        okBtn.removeEventListener('click', handler);
+        FocusModal.hide();
+      });
+    }
+
+    // Wire backdrop click — close only when clicking the backdrop itself,
+    // not when clicking inside the modal box
+    backdrop.addEventListener('click', function handler(e) {
+      if (e.target === backdrop) {
+        backdrop.removeEventListener('click', handler);
+        FocusModal.hide();
+      }
+    });
+
+    // Wire Escape key
+    this._boundKeyHandler = function (e) {
+      if (e.key === 'Escape') {
+        FocusModal.hide();
+      }
+    };
+    document.addEventListener('keydown', this._boundKeyHandler);
+  },
+
+  /**
+   * Hides the modal by removing the `is-open` class.
+   * Restores page scrolling and removes the keyboard handler.
+   */
+  hide() {
+    if (!this._isOpen) return;
+    this._isOpen = false;
+
+    const backdrop = document.getElementById('focus-modal-backdrop');
+    if (backdrop) {
+      backdrop.classList.remove('is-open');
+    }
+
+    // Restore page scrolling
+    document.body.style.overflow = '';
+
+    // Remove the Escape key listener
+    if (this._boundKeyHandler) {
+      document.removeEventListener('keydown', this._boundKeyHandler);
+      this._boundKeyHandler = null;
     }
   },
 };
