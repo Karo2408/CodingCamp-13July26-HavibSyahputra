@@ -8,40 +8,40 @@ Build a fully client-side personal productivity homepage using pure HTML, CSS, a
 
 ## Tasks
 
-- [ ] 1. Scaffold project files and HTML skeleton
-  - [ ] 1.1 Create `index.html`, `css/style.css`, and `js/app.js` with empty/boilerplate content
+- [x] 1. Scaffold project files and HTML skeleton
+  - [x] 1.1 Create `index.html`, `css/style.css`, and `js/app.js` with empty/boilerplate content
     - Create the three files in the exact paths specified by Requirement 12.3
     - `index.html` must `<link>` to `css/style.css` and `<script defer src="js/app.js">`
     - _Requirements: 12.3, 12.4, 12.5_
 
-  - [ ] 1.2 Add full HTML markup skeleton to `index.html`
+  - [x] 1.2 Add full HTML markup skeleton to `index.html`
     - Add semantic `<header>`, `<main>`, and `<section>` elements for: clock/date, greeting, timer, todo list, quick links
     - Include all IDs and classes referenced by JS modules (`#clock-time`, `#clock-date`, `#greeting-text`, `#greeting-name-input`, `#greeting-save-btn`, `#timer-display`, `#timer-start`, `#timer-stop`, `#timer-reset`, `#pomodoro-input`, `#pomodoro-save`, `#task-input`, `#task-add-btn`, `#task-list`, `#task-sort`, `#link-label-input`, `#link-url-input`, `#link-add-btn`, `#links-list`, `#theme-toggle`, `#storage-warning`)
     - Add the inline `<script>` block for flash-free theme (as shown in design) before `<link rel="stylesheet">`
     - _Requirements: 10.4, 12.3_
 
 
-- [ ] 2. CSS foundation and theme tokens
-  - [ ] 2.1 Write CSS custom properties for both themes and base layout in `css/style.css`
+- [x] 2. CSS foundation and theme tokens
+  - [x] 2.1 Write CSS custom properties for both themes and base layout in `css/style.css`
     - Define all colour tokens under `[data-theme="light"]` and `[data-theme="dark"]` on `:root` / `html`
     - Add typography (font stack, sizes, line-heights), spacing scale, and base reset
     - Add flex/grid layout for the dashboard grid (header row + main widget grid)
     - _Requirements: 10.1, 10.2, 12.1_
 
-  - [ ] 2.2 Add full light/dark mode CSS, toggle button styles, and transitions
+  - [x] 2.2 Add full light/dark mode CSS, toggle button styles, and transitions
     - Implement all colour custom properties fully for both themes (background, surface, text, border, accent)
     - Style the `#theme-toggle` button (icon or label swap, accessible focus ring)
     - Add `transition: background-color 0.1s, color 0.1s` to key elements so theme switch completes within 100 ms
     - _Requirements: 10.2, 10.5, 10.6_
 
-  - [ ] 2.3 Add responsive layout and visual polish
+  - [x] 2.3 Add responsive layout and visual polish
     - Media queries for mobile viewport (single column) and desktop (multi-column grid)
     - Style all widget cards, inputs, buttons, error messages, notification banners, strikethrough on completed tasks
     - _Requirements: 12.1, 12.2_
 
 
-- [ ] 3. StorageService and NotificationService
-  - [ ] 3.1 Implement `StorageService` in `js/app.js`
+- [x] 3. StorageService and NotificationService
+  - [x] 3.1 Implement `StorageService` in `js/app.js`
     - Implement `init()` with a probe write/read/delete cycle; set `_available`
     - Implement `get(key)` with `try/catch` around `localStorage.getItem` + `JSON.parse`; return `null` on error and call `NotificationService.showWarning()` on first parse failure
     - Implement `set(key, value)` with `try/catch` around `JSON.stringify` + `localStorage.setItem`; call `NotificationService.showWarning()` on first failure, set `_available = false`
@@ -59,15 +59,15 @@ Build a fully client-side personal productivity homepage using pure HTML, CSS, a
     - **Validates: Requirements 11.5, 4.6**
     - Inject invalid JSON strings into mocked `localStorage`; assert `get()` returns `null` and never throws
 
-  - [ ] 3.4 Implement `NotificationService` in `js/app.js`
+  - [x] 3.4 Implement `NotificationService` in `js/app.js`
     - Implement `showWarning(message)` — renders or updates a persistent `#storage-warning` banner with `role="status"`; does not duplicate if already shown
     - Implement `hideWarning()`
     - Implement `showAlert(message, durationMs)` — renders auto-dismissing `role="alert"` banner; `setTimeout` removes it after `durationMs`
     - _Requirements: 2.5, 3.7, 11.2_
 
 
-- [ ] 4. ThemeModule
-  - [ ] 4.1 Implement `ThemeModule` in `js/app.js`
+- [x] 4. ThemeModule
+  - [x] 4.1 Implement `ThemeModule` in `js/app.js`
     - Implement `_detect()`: read `tld_theme` from `StorageService`; if not `"light"` or `"dark"`, check `window.matchMedia('(prefers-color-scheme: dark)')`; default to `"light"`
     - Implement `apply(theme)`: set `data-theme` attribute on `document.documentElement`
     - Implement `toggle()`: flip `_current`, call `apply()`, persist via `StorageService.set("tld_theme", ...)`
@@ -80,8 +80,8 @@ Build a fully client-side personal productivity homepage using pure HTML, CSS, a
     - Use `fc.constantFrom('light','dark')`; mock `StorageService`; assert `_detect()` returns the toggled value
 
 
-- [ ] 5. ClockModule
-  - [ ] 5.1 Implement `ClockModule` in `js/app.js`
+- [x] 5. ClockModule
+  - [x] 5.1 Implement `ClockModule` in `js/app.js`
     - Implement `formatTime(date)` — pure function: zero-pad hours, minutes, seconds → `"HH:MM:SS"`; return `"--:--:--"` if `date` is invalid
     - Implement `formatDate(date)` — pure function: build `"DayName, DD Month YYYY"` using arrays of English day/month names; return `"Unavailable"` if `date` is invalid
     - Implement `_tick()`: get `new Date()`, write to `#clock-time` and `#clock-date`
@@ -100,8 +100,8 @@ Build a fully client-side personal productivity homepage using pure HTML, CSS, a
     - Use `fc.date()` arbitrary; assert output matches `/<DayName>, \d{2} <MonthName> \d{4}/`
 
 
-- [ ] 6. GreetingModule
-  - [ ] 6.1 Implement `GreetingModule` pure functions in `js/app.js`
+- [x] 6. GreetingModule
+  - [x] 6.1 Implement `GreetingModule` pure functions in `js/app.js`
     - Implement `getGreetingWord(hour)`: map integer [0–23] to greeting strings per Requirements 1.3–1.6
     - Implement `formatGreeting(word, name)`: if `name` is non-empty return `"${word}, ${name}!"`; else return `"${word}!"`
     - _Requirements: 1.3, 1.4, 1.5, 1.6, 1.7, 1.8_
@@ -116,7 +116,7 @@ Build a fully client-side personal productivity homepage using pure HTML, CSS, a
     - **Validates: Requirements 1.7**
     - Use `fc.string()` × `fc.string({minLength:1})`; assert exact concatenation pattern
 
-  - [ ] 6.4 Implement `GreetingModule.saveName`, `render`, and `init` in `js/app.js`
+  - [x] 6.4 Implement `GreetingModule.saveName`, `render`, and `init` in `js/app.js`
     - `saveName(rawInput)`: trim; if non-empty persist to `StorageService` key `tld_greetingName`; else call `StorageService.remove("tld_greetingName")`; call `render()`
     - `render()`: read name from `StorageService`; read current hour from `new Date()`; compose greeting via pure functions; write to `#greeting-text`
     - `init()`: call `render()`; populate `#greeting-name-input` with stored name; wire save button and Enter-key on input
@@ -133,8 +133,8 @@ Build a fully client-side personal productivity homepage using pure HTML, CSS, a
     - Use `fc.stringOf(fc.constantFrom(' ','\t','\n'))`; assert greeting rendered without name
 
 
-- [ ] 7. TimerModule — core state machine
-  - [ ] 7.1 Implement `TimerModule` state machine and display in `js/app.js`
+- [x] 7. TimerModule — core state machine
+  - [x] 7.1 Implement `TimerModule` state machine and display in `js/app.js`
     - Implement `formatSeconds(totalSeconds)` — pure function: `Math.floor(s/60)` padded + `:` + remainder padded → `"MM:SS"`
     - Implement `_updateDisplay()`: read `_remaining`, call `formatSeconds`, write to `#timer-display`
     - Implement `_updateButtons()`: enable/disable `#timer-start`, `#timer-stop`, `#timer-reset` per the button-state table in the design
@@ -157,8 +157,8 @@ Build a fully client-side personal productivity homepage using pure HTML, CSS, a
     - Use `fc.constantFrom('running','stopped','atZero')`; assert enabled/disabled state matches design table
 
 
-- [ ] 8. TimerModule — configurable Pomodoro duration
-  - [ ] 8.1 Implement `TimerModule.saveDuration` in `js/app.js`
+- [x] 8. TimerModule — configurable Pomodoro duration
+  - [x] 8.1 Implement `TimerModule.saveDuration` in `js/app.js`
     - Parse `rawInput` as integer; reject if `NaN`, decimal, less than 1, or greater than 120 — display inline error on `#pomodoro-error`
     - If valid and timer is running, display inline message on `#pomodoro-error` that timer must be stopped first; do not apply change
     - If valid and timer is not running: persist to `StorageService.set("tld_pomodoroDuration", D)`, update `_duration`, call `reset()`
@@ -176,11 +176,11 @@ Build a fully client-side personal productivity homepage using pure HTML, CSS, a
     - Use `fc.oneof(fc.integer({max:0}), fc.integer({min:121}), fc.float(), fc.string())`; assert no storage write and previous duration unchanged
 
 
-- [ ] 9. Checkpoint — core services and clock/greeting/timer complete
+- [x] 9. Checkpoint — core services and clock/greeting/timer complete
   - Ensure all tests pass, ask the user if questions arise.
 
-- [ ] 10. TodoModule — add task
-  - [ ] 10.1 Implement `TodoModule._validateTitle` and `addTask` in `js/app.js`
+- [x] 10. TodoModule — add task
+  - [x] 10.1 Implement `TodoModule._validateTitle` and `addTask` in `js/app.js`
     - `_validateTitle(title, excludeId)` — pure function: trim, check non-empty (max 100 chars), check no case-insensitive duplicate in `_tasks` excluding `excludeId`; return `{valid: bool, error: string|null}`
     - `addTask(title)`: call `_validateTitle`; on failure display error in `#task-add-error`; on success create `{id: crypto.randomUUID(), title: title.trim(), completed: false, createdAt: Date.now()}`, push to `_tasks`, call `_persist()`, call `_render()`
     - Wire `#task-add-btn` click and Enter-key on `#task-input` in `init()`
@@ -198,7 +198,7 @@ Build a fully client-side personal productivity homepage using pure HTML, CSS, a
 
 
 - [ ] 11. TodoModule — edit task
-  - [ ] 11.1 Implement `TodoModule.editTask` and inline edit UI in `js/app.js`
+  - [~] 11.1 Implement `TodoModule.editTask` and inline edit UI in `js/app.js`
     - `editTask(id, newTitle)`: call `_validateTitle(newTitle, id)`; on failure display inline error next to the task's input; on success update `_tasks` entry, call `_persist()`, call `_render()`
     - `_renderTask(task)`: render edit button that replaces the title span with an `<input>` pre-filled with current title (cursor at end), and shows confirm/cancel buttons
     - On cancel: restore original title display without persisting
@@ -216,7 +216,7 @@ Build a fully client-side personal productivity homepage using pure HTML, CSS, a
 
 
 - [ ] 12. TodoModule — complete and delete tasks
-  - [ ] 12.1 Implement `TodoModule.toggleComplete` and `deleteTask` in `js/app.js`
+  - [~] 12.1 Implement `TodoModule.toggleComplete` and `deleteTask` in `js/app.js`
     - `toggleComplete(id)`: capture previous `completed` value; flip it in `_tasks`; call `_persist()`; if `StorageService.isAvailable()` is `false` after the call, revert to previous value and re-render; else re-render
     - `deleteTask(id)`: capture task and its index; remove from `_tasks`; call `_persist()`; if `StorageService.isAvailable()` is `false`, re-insert at original index and re-render with error; else re-render
     - `_renderTask(task)`: apply CSS class `task--completed` (strikethrough) when `task.completed === true`
@@ -235,7 +235,7 @@ Build a fully client-side personal productivity homepage using pure HTML, CSS, a
 
 
 - [ ] 13. TodoModule — sort and persistence
-  - [ ] 13.1 Implement `TodoModule._getSortedTasks`, `setSortPreference`, `_persist`, `_render`, and `init` in `js/app.js`
+  - [~] 13.1 Implement `TodoModule._getSortedTasks`, `setSortPreference`, `_persist`, `_render`, and `init` in `js/app.js`
     - `_getSortedTasks()`: return a **shallow copy** of `_tasks` sorted per `_sortPref`; never mutate `_tasks`
     - `setSortPreference(pref)`: persist `pref` to `StorageService.set("tld_sortPreference", pref)`, update `_sortPref`, call `_render()`; re-render must complete within 300 ms
     - `_persist()`: call `StorageService.set("tld_tasks", _tasks)`
@@ -259,11 +259,11 @@ Build a fully client-side personal productivity homepage using pure HTML, CSS, a
     - Use array of task objects; call `_persist()` then reload via `init()`; assert task list equals original
 
 
-- [ ] 14. Checkpoint — TodoModule complete
+- [~] 14. Checkpoint — TodoModule complete
   - Ensure all tests pass, ask the user if questions arise.
 
 - [ ] 15. QuickLinksModule
-  - [ ] 15.1 Implement `QuickLinksModule._validateLink`, `addLink`, `deleteLink`, `_render`, `_renderCard`, `_persist`, and `init` in `js/app.js`
+  - [~] 15.1 Implement `QuickLinksModule._validateLink`, `addLink`, `deleteLink`, `_render`, `_renderCard`, `_persist`, and `init` in `js/app.js`
     - `_validateLink(label, url)`: pure function — check label non-empty and ≤ 100 chars; check URL starts with `http://` or `https://`; return `{valid, errors}`
     - `addLink(label, url)`: call `_validateLink`; if invalid display field-level errors on `#link-label-error` / `#link-url-error`; if `_links.length >= 20` display error on `#link-cap-error`; on success create `{id, label: label.trim(), url, createdAt: Date.now()}`, push to `_links`, call `_persist()`, call `_render()`
     - `deleteLink(id)`: remove from `_links`, call `_persist()`, call `_render()`
@@ -288,14 +288,14 @@ Build a fully client-side personal productivity homepage using pure HTML, CSS, a
 
 
 - [ ] 16. TimeoutGuard
-  - [ ] 16.1 Implement `TimeoutGuard` in `js/app.js`
+  - [~] 16.1 Implement `TimeoutGuard` in `js/app.js`
     - `init()`: call `setTimeout(() => TimeoutGuard._showError(), 10000)` and store the timeout id; wire into startup sequence so that `DOMContentLoaded` clears it via `clearTimeout`
     - `_showError()`: display a visible error element (or use `NotificationService.showWarning`) instructing the user to reload the page
     - Place `TimeoutGuard.init()` call at the very top of the script (before `DOMContentLoaded`) per the startup sequence in the design
     - _Requirements: 12.6_
 
 - [ ] 17. Wire all modules in `DOMContentLoaded` and final integration
-  - [ ] 17.1 Wire the startup sequence in `js/app.js`
+  - [~] 17.1 Wire the startup sequence in `js/app.js`
     - Inside `document.addEventListener('DOMContentLoaded', ...)`: call `StorageService.init()`, `ThemeModule.init()`, `ClockModule.init()`, `GreetingModule.init()`, `TimerModule.init()`, `TodoModule.init()`, `QuickLinksModule.init()`
     - Clear `TimeoutGuard` timeout at the end of `DOMContentLoaded`
     - Ensure all module declarations appear before the `DOMContentLoaded` listener
@@ -306,7 +306,7 @@ Build a fully client-side personal productivity homepage using pure HTML, CSS, a
     - Test: add duplicate task → assert rejected; sort change → assert rendered order; persistence survives simulated reload
     - _Requirements: 5.2, 5.4, 6.5, 7.2, 7.8, 8.2_
 
-- [ ] 18. Final checkpoint — Ensure all tests pass
+- [~] 18. Final checkpoint — Ensure all tests pass
   - Ensure all tests pass, ask the user if questions arise.
 
 

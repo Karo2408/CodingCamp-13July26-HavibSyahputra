@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>To-Do Life Dashboard</title>
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('tld_theme');
+        if (t === 'dark' || t === 'light') {
+          document.documentElement.setAttribute('data-theme', t);
+        } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        } else {
+          document.documentElement.setAttribute('data-theme', 'light');
+        }
+      } catch (e) {
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
+    })();
+  </script>
+  <link rel="stylesheet" href="css/style.css">
+  <script defer src="js/app.js"></script>
+</head>
+<body>
+
+  <!-- Storage / persistence warning banner -->
+  <div id="storage-warning" role="alert" aria-live="polite"></div>
+
+  <!-- ===== HEADER: clock + theme toggle ===== -->
+  <header class="site-header">
+    <div class="clock-widget">
+      <span id="clock-time" aria-live="polite">--:--:--</span>
+      <span id="clock-date">Unavailable</span>
+    </div>
+    <button id="theme-toggle" type="button" aria-label="Toggle light/dark theme">Toggle Theme</button>
+  </header>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main class="dashboard">
+
+    <!-- Greeting section -->
+    <section class="widget greeting-widget" aria-labelledby="greeting-heading">
+      <h2 id="greeting-heading" class="visually-hidden">Greeting</h2>
+      <p id="greeting-text" aria-live="polite">Good Morning!</p>
+      <div class="greeting-form">
+        <label for="greeting-name-input">Your name</label>
+        <input
+          type="text"
+          id="greeting-name-input"
+          maxlength="50"
+          placeholder="Enter your name"
+          autocomplete="off"
+        >
+        <button type="button" id="greeting-save-btn">Save</button>
+      </div>
+    </section>
+
+    <!-- Focus Timer (Pomodoro) section -->
+    <section class="widget timer-widget" aria-labelledby="timer-heading">
+      <h2 id="timer-heading">Focus Timer</h2>
+
+      <div id="timer-display" aria-live="polite" aria-label="Timer display">25:00</div>
+
+      <div class="timer-controls">
+        <button type="button" id="timer-start">Start</button>
+        <button type="button" id="timer-stop" disabled>Stop</button>
+        <button type="button" id="timer-reset">Reset</button>
+      </div>
+
+      <div class="pomodoro-config">
+        <label for="pomodoro-input">Duration (minutes)</label>
+        <input
+          type="number"
+          id="pomodoro-input"
+          min="1"
+          max="120"
+          placeholder="1–120"
+          aria-describedby="pomodoro-error"
+        >
+        <button type="button" id="pomodoro-save">Set Duration</button>
+        <span id="pomodoro-error" class="error-msg" role="alert" aria-live="polite"></span>
+      </div>
+    </section>
+
+    <!-- To-Do List section -->
+    <section class="widget todo-widget" aria-labelledby="todo-heading">
+      <h2 id="todo-heading">To-Do List</h2>
+
+      <div class="task-add-form">
+        <label for="task-input">New task</label>
+        <input
+          type="text"
+          id="task-input"
+          maxlength="100"
+          placeholder="Add a task…"
+          autocomplete="off"
+          aria-describedby="task-add-error"
+        >
+        <button type="button" id="task-add-btn">Add</button>
+        <span id="task-add-error" class="error-msg" role="alert" aria-live="polite"></span>
+      </div>
+
+      <div class="task-sort-row">
+        <label for="task-sort">Sort by</label>
+        <select id="task-sort" aria-label="Sort tasks">
+          <option value="default">Default (creation order)</option>
+          <option value="az">Alphabetical (A–Z)</option>
+          <option value="za">Alphabetical (Z–A)</option>
+          <option value="completed-last">Completed last</option>
+          <option value="completed-first">Completed first</option>
+        </select>
+      </div>
+
+      <ul id="task-list" aria-label="Task list" aria-live="polite"></ul>
+    </section>
+
+    <!-- Quick Links section -->
+    <section class="widget quick-links-widget" aria-labelledby="links-heading">
+      <h2 id="links-heading">Quick Links</h2>
+
+      <div class="link-add-form">
+        <div class="link-field">
+          <label for="link-label-input">Label</label>
+          <input
+            type="text"
+            id="link-label-input"
+            maxlength="100"
+            placeholder="Label"
+            autocomplete="off"
+            aria-describedby="link-label-error"
+          >
+          <span id="link-label-error" class="error-msg" role="alert" aria-live="polite"></span>
+        </div>
+
+        <div class="link-field">
+          <label for="link-url-input">URL</label>
+          <input
+            type="url"
+            id="link-url-input"
+            maxlength="2048"
+            placeholder="https://example.com"
+            autocomplete="off"
+            aria-describedby="link-url-error"
+          >
+          <span id="link-url-error" class="error-msg" role="alert" aria-live="polite"></span>
+        </div>
+
+        <button type="button" id="link-add-btn">Add Link</button>
+        <span id="link-cap-error" class="error-msg" role="alert" aria-live="polite"></span>
+      </div>
+
+      <div id="links-list" aria-label="Quick links" aria-live="polite"></div>
+    </section>
+
+  </main>
+
+</body>
+</html>

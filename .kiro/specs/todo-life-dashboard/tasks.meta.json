@@ -1,0 +1,374 @@
+{
+  "pbtResults": {},
+  "executionHistory": {
+    "1.1 Create `index.html`, `css/style.css`, and `js/app.js` with empty/boilerplate content": [
+      {
+        "executionId": "f0a27884-35e8-4527-964c-507fcf8cd84e",
+        "chatSessionId": "sess_7f8e9841-8526-4564-863c-4c71fc980a01",
+        "timestamp": 1784215301581
+      },
+      {
+        "executionId": "f0a27884-35e8-4527-964c-507fcf8cd84e",
+        "chatSessionId": "sess_7f8e9841-8526-4564-863c-4c71fc980a01",
+        "timestamp": 1784215317094
+      },
+      {
+        "executionId": "f0a27884-35e8-4527-964c-507fcf8cd84e",
+        "chatSessionId": "sess_7f8e9841-8526-4564-863c-4c71fc980a01",
+        "timestamp": 1784215418632
+      }
+    ],
+    "1.2 Add full HTML markup skeleton to `index.html`": [
+      {
+        "executionId": "f0a27884-35e8-4527-964c-507fcf8cd84e",
+        "chatSessionId": "sess_7f8e9841-8526-4564-863c-4c71fc980a01",
+        "timestamp": 1784215302892
+      },
+      {
+        "executionId": "f0a27884-35e8-4527-964c-507fcf8cd84e",
+        "chatSessionId": "sess_7f8e9841-8526-4564-863c-4c71fc980a01",
+        "timestamp": 1784215423291
+      },
+      {
+        "executionId": "f0a27884-35e8-4527-964c-507fcf8cd84e",
+        "chatSessionId": "sess_7f8e9841-8526-4564-863c-4c71fc980a01",
+        "timestamp": 1784215633173
+      }
+    ],
+    "2.1 Write CSS custom properties for both themes and base layout in `css/style.css`": [
+      {
+        "executionId": "f0a27884-35e8-4527-964c-507fcf8cd84e",
+        "chatSessionId": "sess_7f8e9841-8526-4564-863c-4c71fc980a01",
+        "timestamp": 1784215303185
+      },
+      {
+        "executionId": "f0a27884-35e8-4527-964c-507fcf8cd84e",
+        "chatSessionId": "sess_7f8e9841-8526-4564-863c-4c71fc980a01",
+        "timestamp": 1784215427830
+      },
+      {
+        "executionId": "f0a27884-35e8-4527-964c-507fcf8cd84e",
+        "chatSessionId": "sess_7f8e9841-8526-4564-863c-4c71fc980a01",
+        "timestamp": 1784215634330
+      }
+    ],
+    "2.2 Add full light/dark mode CSS, toggle button styles, and transitions": [
+      {
+        "executionId": "f0a27884-35e8-4527-964c-507fcf8cd84e",
+        "chatSessionId": "sess_7f8e9841-8526-4564-863c-4c71fc980a01",
+        "timestamp": 1784215303329
+      },
+      {
+        "executionId": "f0a27884-35e8-4527-964c-507fcf8cd84e",
+        "chatSessionId": "sess_7f8e9841-8526-4564-863c-4c71fc980a01",
+        "timestamp": 1784215639114
+      },
+      {
+        "executionId": "f0a27884-35e8-4527-964c-507fcf8cd84e",
+        "chatSessionId": "sess_7f8e9841-8526-4564-863c-4c71fc980a01",
+        "timestamp": 1784215971513
+      }
+    ],
+    "2.3 Add responsive layout and visual polish": [
+      {
+        "executionId": "f0a27884-35e8-4527-964c-507fcf8cd84e",
+        "chatSessionId": "sess_7f8e9841-8526-4564-863c-4c71fc980a01",
+        "timestamp": 1784215303482
+      },
+      {
+        "executionId": "f0a27884-35e8-4527-964c-507fcf8cd84e",
+        "chatSessionId": "sess_7f8e9841-8526-4564-863c-4c71fc980a01",
+        "timestamp": 1784215639958
+      },
+      {
+        "executionId": "f0a27884-35e8-4527-964c-507fcf8cd84e",
+        "chatSessionId": "sess_7f8e9841-8526-4564-863c-4c71fc980a01",
+        "timestamp": 1784215972490
+      }
+    ],
+    "3.1 Implement `StorageService` in `js/app.js`": [
+      {
+        "executionId": "f0a27884-35e8-4527-964c-507fcf8cd84e",
+        "chatSessionId": "sess_7f8e9841-8526-4564-863c-4c71fc980a01",
+        "timestamp": 1784215303660
+      },
+      {
+        "executionId": "f0a27884-35e8-4527-964c-507fcf8cd84e",
+        "chatSessionId": "sess_7f8e9841-8526-4564-863c-4c71fc980a01",
+        "timestamp": 1784215640738
+      },
+      {
+        "executionId": "f0a27884-35e8-4527-964c-507fcf8cd84e",
+        "chatSessionId": "sess_7f8e9841-8526-4564-863c-4c71fc980a01",
+        "timestamp": 1784215973485
+      }
+    ],
+    "3.4 Implement `NotificationService` in `js/app.js`": [
+      {
+        "executionId": "f0a27884-35e8-4527-964c-507fcf8cd84e",
+        "chatSessionId": "sess_7f8e9841-8526-4564-863c-4c71fc980a01",
+        "timestamp": 1784215303777
+      },
+      {
+        "executionId": "f0a27884-35e8-4527-964c-507fcf8cd84e",
+        "chatSessionId": "sess_7f8e9841-8526-4564-863c-4c71fc980a01",
+        "timestamp": 1784215641654
+      },
+      {
+        "executionId": "f0a27884-35e8-4527-964c-507fcf8cd84e",
+        "chatSessionId": "sess_7f8e9841-8526-4564-863c-4c71fc980a01",
+        "timestamp": 1784215974391
+      }
+    ],
+    "4.1 Implement `ThemeModule` in `js/app.js`": [
+      {
+        "executionId": "f0a27884-35e8-4527-964c-507fcf8cd84e",
+        "chatSessionId": "sess_7f8e9841-8526-4564-863c-4c71fc980a01",
+        "timestamp": 1784215303912
+      },
+      {
+        "executionId": "f0a27884-35e8-4527-964c-507fcf8cd84e",
+        "chatSessionId": "sess_7f8e9841-8526-4564-863c-4c71fc980a01",
+        "timestamp": 1784215981225
+      },
+      {
+        "executionId": "f0a27884-35e8-4527-964c-507fcf8cd84e",
+        "chatSessionId": "sess_7f8e9841-8526-4564-863c-4c71fc980a01",
+        "timestamp": 1784216044902
+      }
+    ],
+    "5.1 Implement `ClockModule` in `js/app.js`": [
+      {
+        "executionId": "f0a27884-35e8-4527-964c-507fcf8cd84e",
+        "chatSessionId": "sess_7f8e9841-8526-4564-863c-4c71fc980a01",
+        "timestamp": 1784215304053
+      },
+      {
+        "executionId": "f0a27884-35e8-4527-964c-507fcf8cd84e",
+        "chatSessionId": "sess_7f8e9841-8526-4564-863c-4c71fc980a01",
+        "timestamp": 1784216065006
+      },
+      {
+        "executionId": "f0a27884-35e8-4527-964c-507fcf8cd84e",
+        "chatSessionId": "sess_7f8e9841-8526-4564-863c-4c71fc980a01",
+        "timestamp": 1784216190190
+      }
+    ],
+    "6.1 Implement `GreetingModule` pure functions in `js/app.js`": [
+      {
+        "executionId": "f0a27884-35e8-4527-964c-507fcf8cd84e",
+        "chatSessionId": "sess_7f8e9841-8526-4564-863c-4c71fc980a01",
+        "timestamp": 1784215304379
+      },
+      {
+        "executionId": "f0a27884-35e8-4527-964c-507fcf8cd84e",
+        "chatSessionId": "sess_7f8e9841-8526-4564-863c-4c71fc980a01",
+        "timestamp": 1784216066088
+      },
+      {
+        "executionId": "f0a27884-35e8-4527-964c-507fcf8cd84e",
+        "chatSessionId": "sess_7f8e9841-8526-4564-863c-4c71fc980a01",
+        "timestamp": 1784216190895
+      }
+    ],
+    "6.4 Implement `GreetingModule.saveName`, `render`, and `init` in `js/app.js`": [
+      {
+        "executionId": "f0a27884-35e8-4527-964c-507fcf8cd84e",
+        "chatSessionId": "sess_7f8e9841-8526-4564-863c-4c71fc980a01",
+        "timestamp": 1784215304693
+      },
+      {
+        "executionId": "f0a27884-35e8-4527-964c-507fcf8cd84e",
+        "chatSessionId": "sess_7f8e9841-8526-4564-863c-4c71fc980a01",
+        "timestamp": 1784216195576
+      },
+      {
+        "executionId": "f0a27884-35e8-4527-964c-507fcf8cd84e",
+        "chatSessionId": "sess_7f8e9841-8526-4564-863c-4c71fc980a01",
+        "timestamp": 1784216287337
+      }
+    ],
+    "7.1 Implement `TimerModule` state machine and display in `js/app.js`": [
+      {
+        "executionId": "f0a27884-35e8-4527-964c-507fcf8cd84e",
+        "chatSessionId": "sess_7f8e9841-8526-4564-863c-4c71fc980a01",
+        "timestamp": 1784215304825
+      },
+      {
+        "executionId": "f0a27884-35e8-4527-964c-507fcf8cd84e",
+        "chatSessionId": "sess_7f8e9841-8526-4564-863c-4c71fc980a01",
+        "timestamp": 1784216292532
+      },
+      {
+        "executionId": "f0a27884-35e8-4527-964c-507fcf8cd84e",
+        "chatSessionId": "sess_7f8e9841-8526-4564-863c-4c71fc980a01",
+        "timestamp": 1784216387670
+      }
+    ],
+    "8.1 Implement `TimerModule.saveDuration` in `js/app.js`": [
+      {
+        "executionId": "f0a27884-35e8-4527-964c-507fcf8cd84e",
+        "chatSessionId": "sess_7f8e9841-8526-4564-863c-4c71fc980a01",
+        "timestamp": 1784215304970
+      },
+      {
+        "executionId": "f0a27884-35e8-4527-964c-507fcf8cd84e",
+        "chatSessionId": "sess_7f8e9841-8526-4564-863c-4c71fc980a01",
+        "timestamp": 1784216404730
+      },
+      {
+        "executionId": "f0a27884-35e8-4527-964c-507fcf8cd84e",
+        "chatSessionId": "sess_7f8e9841-8526-4564-863c-4c71fc980a01",
+        "timestamp": 1784216529163
+      }
+    ],
+    "9. Checkpoint — core services and clock/greeting/timer complete": [
+      {
+        "executionId": "f0a27884-35e8-4527-964c-507fcf8cd84e",
+        "chatSessionId": "sess_7f8e9841-8526-4564-863c-4c71fc980a01",
+        "timestamp": 1784215305095
+      },
+      {
+        "executionId": "f0a27884-35e8-4527-964c-507fcf8cd84e",
+        "chatSessionId": "sess_7f8e9841-8526-4564-863c-4c71fc980a01",
+        "timestamp": 1784216534650
+      }
+    ],
+    "10.1 Implement `TodoModule._validateTitle` and `addTask` in `js/app.js`": [
+      {
+        "executionId": "f0a27884-35e8-4527-964c-507fcf8cd84e",
+        "chatSessionId": "sess_7f8e9841-8526-4564-863c-4c71fc980a01",
+        "timestamp": 1784215305258
+      },
+      {
+        "executionId": "f0a27884-35e8-4527-964c-507fcf8cd84e",
+        "chatSessionId": "sess_7f8e9841-8526-4564-863c-4c71fc980a01",
+        "timestamp": 1784216540735
+      },
+      {
+        "executionId": "f0a27884-35e8-4527-964c-507fcf8cd84e",
+        "chatSessionId": "sess_7f8e9841-8526-4564-863c-4c71fc980a01",
+        "timestamp": 1784216725812
+      }
+    ],
+    "11.1 Implement `TodoModule.editTask` and inline edit UI in `js/app.js`": [
+      {
+        "executionId": "f0a27884-35e8-4527-964c-507fcf8cd84e",
+        "chatSessionId": "sess_7f8e9841-8526-4564-863c-4c71fc980a01",
+        "timestamp": 1784215305375
+      }
+    ],
+    "12.1 Implement `TodoModule.toggleComplete` and `deleteTask` in `js/app.js`": [
+      {
+        "executionId": "f0a27884-35e8-4527-964c-507fcf8cd84e",
+        "chatSessionId": "sess_7f8e9841-8526-4564-863c-4c71fc980a01",
+        "timestamp": 1784215305517
+      }
+    ],
+    "13.1 Implement `TodoModule._getSortedTasks`, `setSortPreference`, `_persist`, `_render`, and `init` in `js/app.js`": [
+      {
+        "executionId": "f0a27884-35e8-4527-964c-507fcf8cd84e",
+        "chatSessionId": "sess_7f8e9841-8526-4564-863c-4c71fc980a01",
+        "timestamp": 1784215305677
+      }
+    ],
+    "14. Checkpoint — TodoModule complete": [
+      {
+        "executionId": "f0a27884-35e8-4527-964c-507fcf8cd84e",
+        "chatSessionId": "sess_7f8e9841-8526-4564-863c-4c71fc980a01",
+        "timestamp": 1784215305812
+      }
+    ],
+    "15.1 Implement `QuickLinksModule._validateLink`, `addLink`, `deleteLink`, `_render`, `_renderCard`, `_persist`, and `init` in `js/app.js`": [
+      {
+        "executionId": "f0a27884-35e8-4527-964c-507fcf8cd84e",
+        "chatSessionId": "sess_7f8e9841-8526-4564-863c-4c71fc980a01",
+        "timestamp": 1784215305947
+      }
+    ],
+    "16.1 Implement `TimeoutGuard` in `js/app.js`": [
+      {
+        "executionId": "f0a27884-35e8-4527-964c-507fcf8cd84e",
+        "chatSessionId": "sess_7f8e9841-8526-4564-863c-4c71fc980a01",
+        "timestamp": 1784215306092
+      }
+    ],
+    "17.1 Wire the startup sequence in `js/app.js`": [
+      {
+        "executionId": "f0a27884-35e8-4527-964c-507fcf8cd84e",
+        "chatSessionId": "sess_7f8e9841-8526-4564-863c-4c71fc980a01",
+        "timestamp": 1784215306212
+      }
+    ],
+    "18. Final checkpoint — Ensure all tests pass": [
+      {
+        "executionId": "f0a27884-35e8-4527-964c-507fcf8cd84e",
+        "chatSessionId": "sess_7f8e9841-8526-4564-863c-4c71fc980a01",
+        "timestamp": 1784215306351
+      }
+    ],
+    "1. Scaffold project files and HTML skeleton": [
+      {
+        "executionId": "f0a27884-35e8-4527-964c-507fcf8cd84e",
+        "chatSessionId": "sess_7f8e9841-8526-4564-863c-4c71fc980a01",
+        "timestamp": 1784215633375
+      }
+    ],
+    "2. CSS foundation and theme tokens": [
+      {
+        "executionId": "f0a27884-35e8-4527-964c-507fcf8cd84e",
+        "chatSessionId": "sess_7f8e9841-8526-4564-863c-4c71fc980a01",
+        "timestamp": 1784215972745
+      }
+    ],
+    "3. StorageService and NotificationService": [
+      {
+        "executionId": "f0a27884-35e8-4527-964c-507fcf8cd84e",
+        "chatSessionId": "sess_7f8e9841-8526-4564-863c-4c71fc980a01",
+        "timestamp": 1784215974523
+      }
+    ],
+    "4. ThemeModule": [
+      {
+        "executionId": "f0a27884-35e8-4527-964c-507fcf8cd84e",
+        "chatSessionId": "sess_7f8e9841-8526-4564-863c-4c71fc980a01",
+        "timestamp": 1784216045175
+      }
+    ],
+    "5. ClockModule": [
+      {
+        "executionId": "f0a27884-35e8-4527-964c-507fcf8cd84e",
+        "chatSessionId": "sess_7f8e9841-8526-4564-863c-4c71fc980a01",
+        "timestamp": 1784216190359
+      }
+    ],
+    "6. GreetingModule": [
+      {
+        "executionId": "f0a27884-35e8-4527-964c-507fcf8cd84e",
+        "chatSessionId": "sess_7f8e9841-8526-4564-863c-4c71fc980a01",
+        "timestamp": 1784216287507
+      }
+    ],
+    "7. TimerModule — core state machine": [
+      {
+        "executionId": "f0a27884-35e8-4527-964c-507fcf8cd84e",
+        "chatSessionId": "sess_7f8e9841-8526-4564-863c-4c71fc980a01",
+        "timestamp": 1784216387813
+      }
+    ],
+    "8. TimerModule — configurable Pomodoro duration": [
+      {
+        "executionId": "f0a27884-35e8-4527-964c-507fcf8cd84e",
+        "chatSessionId": "sess_7f8e9841-8526-4564-863c-4c71fc980a01",
+        "timestamp": 1784216529303
+      }
+    ],
+    "10. TodoModule — add task": [
+      {
+        "executionId": "f0a27884-35e8-4527-964c-507fcf8cd84e",
+        "chatSessionId": "sess_7f8e9841-8526-4564-863c-4c71fc980a01",
+        "timestamp": 1784216726081
+      }
+    ]
+  }
+}
